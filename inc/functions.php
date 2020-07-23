@@ -127,7 +127,7 @@ function search_catalog_array($search, $limit = null, $offset = 0) {
 function random_catalog_array() {
     include('connection.php');
     try {
-        $sql = "SELECT media_id, title, category, img FROM Media ORDER BY RAND() LIMIT 4";
+        $sql = "SELECT media_id, title, category, img FROM Media ORDER BY RANDOM() LIMIT 4";
         $stmt = $db_connect->prepare($sql);
         $stmt->execute();
     } catch (Exception $e) {
