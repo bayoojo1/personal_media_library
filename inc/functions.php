@@ -4,7 +4,7 @@ function get_catalog_count($category = null, $search = null) {
     include("connection.php");
 
     try {
-        $sql = "SELECT COUNT(media_id) FROM media";
+        $sql = "SELECT COUNT(media_id) FROM Media";
         if(!empty($search)) {
             $stmt = $db_connect->prepare($sql . " WHERE title LIKE :title");
             $stmt->bindValue(':title', '%'.$search.'%', PDO::PARAM_STR);
@@ -27,7 +27,7 @@ function get_catalog_count($category = null, $search = null) {
 function full_catalog_array($limit = null, $offset = 0) {
     include('connection.php');
     try {
-        $sql = "SELECT media_id, title, category, img FROM media 
+        $sql = "SELECT media_id, title, category, img FROM Media 
         ORDER BY 
         REPLACE(
            REPLACE(
@@ -59,7 +59,7 @@ function category_catalog_array($category, $limit = null, $offset = 0) {
     include('connection.php');
     $category = strtolower($category);
     try {
-        $sql = "SELECT media_id, title, category, img FROM media WHERE LOWER(category) = :category 
+        $sql = "SELECT media_id, title, category, img FROM Media WHERE LOWER(category) = :category 
         ORDER BY 
         REPLACE(
            REPLACE(
@@ -93,7 +93,7 @@ function category_catalog_array($category, $limit = null, $offset = 0) {
 function search_catalog_array($search, $limit = null, $offset = 0) {
     include('connection.php');
     try {
-        $sql = "SELECT media_id, title, category, img FROM media WHERE title LIKE :title 
+        $sql = "SELECT media_id, title, category, img FROM Media WHERE title LIKE :title 
         ORDER BY 
         REPLACE(
            REPLACE(
@@ -127,7 +127,7 @@ function search_catalog_array($search, $limit = null, $offset = 0) {
 function random_catalog_array() {
     include('connection.php');
     try {
-        $sql = "SELECT media_id, title, category, img FROM media ORDER BY RAND() LIMIT 4";
+        $sql = "SELECT media_id, title, category, img FROM Media ORDER BY RAND() LIMIT 4";
         $stmt = $db_connect->prepare($sql);
         $stmt->execute();
     } catch (Exception $e) {
@@ -142,7 +142,7 @@ function random_catalog_array() {
 function single_item_array($id) {
     include('connection.php');
     try {
-        $sql = "SELECT media.media_id, title, img, format, year, category, genre, publisher, isbn FROM media JOIN genres ON media.genre_id = genres.genre_id LEFT OUTER JOIN books ON media.media_id = books.media_id WHERE media.media_id = :id";
+        $sql = "SELECT Media.media_id, title, img, format, year, category, genre, publisher, isbn FROM Media JOIN Genres ON Media.genre_id = Genres.genre_id LEFT OUTER JOIN Books ON Media.media_id = Books.media_id WHERE Media.media_id = :id";
         $stmt = $db_connect->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_STR);
         $stmt->execute();
@@ -154,7 +154,7 @@ function single_item_array($id) {
     if(empty($item)) return $item; // this line is called early return. No need of curly braces for the if statement
 
         try {
-            $sql = "SELECT fullname, role FROM media_people JOIN people ON media_people.people_id = people.people_id WHERE media_people.media_id = :id";
+            $sql = "SELECT fullname, role FROM Media_People JOIN People ON Media_People.people_id = People.people_id WHERE Media_People.media_id = :id";
             $stmt = $db_connect->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_STR);
             $stmt->execute();
@@ -174,9 +174,9 @@ function genre_array($category = null) {
   
     try {
       $sql = "SELECT genre, category"
-        . " FROM genres "
-        . " JOIN genre_categories "
-        . " ON genres.genre_id = genre_categories.genre_id ";
+        . " FROM Genres "
+        . " JOIN Genre_Categories "
+        . " ON Genres.genre_id = Genre_Categories.genre_id ";
       if (!empty($category)) {
         $stmt = $db_connect->prepare($sql 
             . " WHERE LOWER(category) = :category"
