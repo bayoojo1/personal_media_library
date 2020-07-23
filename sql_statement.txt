@@ -1,0 +1,20 @@
+SELECT * FROM Media 
+JOIN Media_Genres ON Media.media_id = Media_Genres.media_id 
+JOIN Genres ON Genres.genre_id = Media_Genres.genre_id
+WHERE Media_Genres.media_id = Media.media_id
+
+
+Media Table
+media_id | title | img | format | year | category
+3        | Asa   
+
+Media_Genre Table
+media_id | genre_id
+3        | 3
+
+Genre Table
+genre_id | genre
+3        | Music
+
+
+
